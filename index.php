@@ -37,20 +37,33 @@
     </form>
     <div id="footer">made by kubixqaz the god of programming</div>
     <?php
-    if (isset($_POST['subm_sign_up_form'])) {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $confirm_password = $_POST['confirm_password'];
-        $username = $_POST['username'];
+    $servername = "localhost";
+    $dbusername = "root";
+    $userpassword = "";
+    $dbname = "users_data";
 
-        if ($email != "" && $password != "" && $confirm_password != "" && $username != "") {
-            if ($confirm_password == $password) {
-                $connection = mysqli_connect("localhost", "root", "", "users_data");
-                if ($connection == false) error_log("no connection");
-                $save_data = "insert into users values(null, '$email', '$password', '$username')";
-                mysqli_query($connection, $save_data);
+    $connection = @mysqli_connect($servername, $dbusername, $userpassword, $dbname);
+
+    if ($connection) {
+        if (isset($_POST['subm_sign_up_form'])) {
+
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+            $confirm_password = $_POST['confirm_password'];
+            $username = $_POST['username'];
+
+            if ($email != "" && $password != "" && $confirm_password != "" && $username != "") {
+                if ($confirm_password == $password) {
+                    $save_data = "insert into users values(null, '$email', '$password', '$username')";
+                    mysqli_query($connection, $save_data);
+                }
             }
         }
+        mysqli_close($connection);
+    } else {
+        error_log("no connection");
+        header('Location: no-connection.html');
+        die();
     }
     ?>
 </body>
