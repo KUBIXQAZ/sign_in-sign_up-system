@@ -7,7 +7,7 @@ body {
     padding: 0;
     width: 100%;
     height: 100%;
-    background-color: rgb(247, 247, 247);
+    background-color: rgb(221, 225, 250);
 }
 #bar {
     width: 100%;
@@ -61,4 +61,13 @@ form input:hover {
 .title {
     border-bottom: 1px rgb(103, 103, 233) solid;
     width: 200px;
+}
+div[id=footer] {
+    width: 100%;
+    height: 30px;
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    background-color: rgb(85, 85, 241);
+    color: white;
 }
