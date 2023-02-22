@@ -35,7 +35,7 @@
             <p><input type="submit" name="subm_sign_up_form"></p>
         </div>
     </form>
-    <div id="footer"><span>made by kubixqaz the god of programming</span></div>
+    <div id="footer">made by kubixqaz the god of programming</div>
     <?php
     if (isset($_POST['subm_sign_up_form'])) {
         $email = $_POST['email'];
