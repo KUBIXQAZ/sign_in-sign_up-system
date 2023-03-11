@@ -18,6 +18,8 @@
     $confirm_password_incorrect = false;
     $username_incorrect = false;
     $username_incorrect_reason = "";
+    $email_is_used = false;
+    $username_is_used = false;
 
     $servername = "localhost";
     $dbusername = "root";
@@ -35,10 +37,18 @@
             $username = $_POST['username'];
 
             if ($email != "" && $password != "" && $confirm_password != "" && $username != "" && strlen($password) >= 7 && strlen($password) <= 20 && strlen($username) >= 4 && strlen($username) <= 15) {
-                if ($confirm_password == $password) {
-                    $save_data = "insert into users values(null, '$email', '$password', '$username')";
-                    mysqli_query($connection, $save_data);
-                } else $confirm_password_incorrect = true;
+                
+                $check_email = mysqli_query($connection, "SELECT * FROM users WHERE email = '$email'");
+                $check_username = mysqli_query($connection, "SELECT * FROM users WHERE username = '$username'");
+                if(mysqli_num_rows($check_email) == 0 && mysqli_num_rows($check_username) == 0) {
+                    if ($confirm_password == $password) {
+                        $save_data = "insert into users values(null, '$email', '$password', '$username')";
+                        mysqli_query($connection, $save_data);
+                    } else $confirm_password_incorrect = true;
+                } else {
+                    if(mysqli_num_rows($check_email) > 0) $email_is_used = true;
+                    if(mysqli_num_rows($check_username) > 0) $username_is_used = true;
+                }
             } else {
                 if ($email == "") $email_incorrect = true;
                 if ($password == "") {
@@ -79,6 +89,9 @@
         <div id="sign_up_form">
             <p class="title">email <?php if ($email_incorrect == true) {
                                         echo "<span style='color: red;'> incorrect</span>";
+                                    } 
+                                    if ($email_is_used == true) {
+                                        echo "<span style='color: red;'> email is already in use.</span>";
                                     } ?></p>
             <p class="underline"></p>
             <p><input type="email" name="email" placeholder="email..."></p>
@@ -97,6 +110,9 @@
                                             if ($username_incorrect_reason == "empty") echo "<span style='color: red;'> incorrect - empty.</span>";
                                             else if ($username_incorrect_reason == "too_short") echo "<span style='color: red;'> incorrect - too short min 4 letters.</span>";
                                             else if ($username_incorrect_reason == "too_long") echo "<span style='color: red;'> incorrect - too long max 15 letters.</span>";
+                                        }
+                                        if ($username_is_used == true) {
+                                            echo "<span style='color: red;'> username is already in use.</span>";
                                         } ?></p>
             <p class="underline"></p>
             <p><input type="text" name="username" placeholder="username..."></p>
