@@ -10,7 +10,7 @@
 </head>
 <body>
     <?php
-    //ini_set('display_errors', 0);
+    ini_set('display_errors', 0);
 
     $email_incorrect = false;
     $password_incorrect = false;
@@ -20,6 +20,8 @@
     $username_incorrect_reason = "";
     $email_is_used = false;
     $username_is_used = false;
+
+    $sign_up_answer = "";
 
     $servername = "localhost";
     $dbusername = "root";
@@ -40,10 +42,17 @@
                 
                 $check_email = mysqli_query($connection, "SELECT * FROM users WHERE email = '$email'");
                 $check_username = mysqli_query($connection, "SELECT * FROM users WHERE username = '$username'");
+                if($check_email == false || $check_username == false) $sign_up_answer = "false";
                 if(mysqli_num_rows($check_email) == 0 && mysqli_num_rows($check_username) == 0) {
                     if ($confirm_password == $password) {
                         $save_data = "insert into users values(null, '$email', '$password', '$username')";
-                        mysqli_query($connection, $save_data);
+                        $save_data_answer = mysqli_query($connection, $save_data);
+                        if($save_data_answer) $sign_up_answer = "true";
+                        else {
+                            die();
+                            mysqli_close($connection);
+                            $sign_up_answer = "false";
+                        }
                     } else $confirm_password_incorrect = true;
                 } else {
                     if(mysqli_num_rows($check_email) > 0) $email_is_used = true;
@@ -88,7 +97,7 @@
     <form method="post">
         <div id="sign_up_form">
             <p class="title">email <?php if ($email_incorrect == true) {
-                                        echo "<span style='color: red;'> incorrect</span>";
+                                        echo "<span style='color: red;'> incorrect - empty.</span>";
                                     } 
                                     if ($email_is_used == true) {
                                         echo "<span style='color: red;'> email is already in use.</span>";
@@ -117,6 +126,7 @@
             <p class="underline"></p>
             <p><input type="text" name="username" placeholder="username..."></p>
             <p><input type="submit" name="subm_sign_up_form"></p>
+            <p><?php if($sign_up_answer == 'true') echo "<span style='color: green;'>you have been successfully signed up.</span>"; else if($sign_up_answer == 'false')echo "<span style='color: red;'>you have not been successfully signed up.</span>"; ?></p>
         </div>
     </form>
     <div id="footer">made by kubixqaz the god of programming</div>
