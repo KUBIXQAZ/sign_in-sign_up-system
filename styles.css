@@ -53,14 +53,20 @@ form input[type=submit] {
 form input:hover {
     background-color: rgb(202, 202, 241);
 }
-#sign_in_form, #sign_up_form {
-    float: left;
+div[id=sign_in_form], div[id=sign_up_form] {
     text-align: left;
     position: fixed;
+    width: 350px;
+    height: auto;
 }
-.title {
+.underline {
     border-bottom: 1px rgb(103, 103, 233) solid;
     width: 200px;
+    margin-top: 0;
+}
+p[class=title] {
+    width: 350px;
+    margin-bottom: 2px;
 }
 div[id=footer] {
     width: 100%;
