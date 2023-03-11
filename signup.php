@@ -22,7 +22,7 @@
     $servername = "localhost";
     $dbusername = "root";
     $userpassword = "";
-    $dbname = "users_data";
+    $dbname = "example_name";
 
     $connection = @mysqli_connect($servername, $dbusername, $userpassword, $dbname);
 
